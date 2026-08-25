@@ -1,0 +1,25 @@
+# PowerShell build, test, and analysis output
+TestResults/
+coverage.xml
+*.trx
+*.clixml
+
+# Local PowerShell state
+*.ps1xml.user
+
+# Editor and operating-system files
+.vs/
+.vscode/
+.idea/
+*.code-workspace
+*.user
+*.suo
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary and packaged artifacts
+*.tmp
+*.bak
+*.log
+*.zip
