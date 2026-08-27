@@ -76,6 +76,15 @@ Ardından istediğiniz zaman klasöre gidin:
 xd GDRS
 ```
 
+Klasörü Windows Dosya Gezgini'nde açmak için:
+
+```powershell
+xd -o GDRS
+```
+
+`-o` ve `-open` aynı işi yapar; kayıtlı klasörü yeni bir Dosya Gezgini penceresinde
+açar, bulunduğunuz konumu değiştirmez.
+
 Diğer komutlar:
 
 ```powershell

@@ -65,10 +65,31 @@ function Write-XdAliases {
     }
 }
 
+function Resolve-XdAliasPath {
+    param(
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string] $Name
+    )
+
+    $aliases = Read-XdAliases
+    if (-not $aliases.Contains($Name)) {
+        throw "Kayit bulunamadi: $Name. Kayitlari gormek icin 'xd -list' yazin."
+    }
+
+    $destination = [string]$aliases[$Name]
+    if (-not (Test-Path -LiteralPath $destination -PathType Container)) {
+        throw "'$Name' icin kayitli klasor artik bulunamiyor: $destination"
+    }
+
+    return $destination
+}
+
 function Show-XdHelp {
     @'
 Kullanim:
   xd <ad>                 Kayitli klasore git
+  xd -o <ad>              Kayitli klasoru Dosya Gezgini'nde ac
   xd -add <ad> <yol>      Yeni bir klasor adi kaydet veya guncelle
   xd -atf <ad>            Bulunulan klasoru kaydet (add this folder)
   xd -pwd <ad>            Bulunulan klasoru kaydet
@@ -80,6 +101,7 @@ Ornek:
   xd -add GDRS D:\Workspaces\EWARM_FS\GDRS_SERIE\GDRS
   xd -atf GDRS
   xd GDRS
+  xd -o GDRS
 '@
 }
 
@@ -89,6 +111,11 @@ function xd {
         [Parameter(Mandatory, ParameterSetName = 'Go', Position = 0)]
         [ValidateNotNullOrEmpty()]
         [string] $Name,
+
+        [Parameter(Mandatory, ParameterSetName = 'Open')]
+        [Alias('o', 'open')]
+        [ValidateNotNullOrEmpty()]
+        [string] $OpenName,
 
         [Parameter(Mandatory, ParameterSetName = 'Add')]
         [Alias('add')]
@@ -180,18 +207,15 @@ function xd {
             return
         }
 
+        'Open' {
+            $destination = Resolve-XdAliasPath -Name $OpenName
+            Invoke-Item -LiteralPath $destination
+            Write-Host "Aciliyor: $destination"
+            return
+        }
+
         'Go' {
-            $aliases = Read-XdAliases
-            if (-not $aliases.Contains($Name)) {
-                throw "Kayit bulunamadi: $Name. Kayitlari gormek icin 'xd -list' yazin."
-            }
-
-            $destination = [string]$aliases[$Name]
-            if (-not (Test-Path -LiteralPath $destination -PathType Container)) {
-                throw "'$Name' icin kayitli klasor artik bulunamiyor: $destination"
-            }
-
-            Set-Location -LiteralPath $destination
+            Set-Location -LiteralPath (Resolve-XdAliasPath -Name $Name)
         }
     }
 }

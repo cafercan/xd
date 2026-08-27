@@ -44,6 +44,17 @@ try {
         throw 'xd -pwd bulunulan klasoru kaydedemedi.'
     }
 
+    $openFailed = $false
+    try {
+        xd -o kayitli-olmayan-ad
+    }
+    catch {
+        $openFailed = $true
+    }
+    if (-not $openFailed) {
+        throw 'xd -o bilinmeyen kayit icin hata vermedi.'
+    }
+
     xd -remove gdmp
     xd -remove gdmp2
 
