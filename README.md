@@ -1,7 +1,10 @@
 # xd
 
-`xd`, PowerShell içinde sık kullandığınız klasörlere kısa adlarla gitmenizi sağlar.
+`xd`, terminalde sık kullandığınız klasörlere kısa adlarla gitmenizi sağlar.
 Kayıtlar terminal kapandıktan sonra da korunur.
+
+Windows'ta PowerShell modülü, Linux/macOS'ta bash/zsh betiği olarak çalışır; iki sürümün
+komutları aynıdır. Linux kurulumu için [Linux / macOS](#linux--macos) bölümüne bakın.
 
 ## Gereksinimler
 
@@ -111,10 +114,55 @@ Kayıtlar `%LOCALAPPDATA%\xd\aliases.json` dosyasında tutulur.
 Bu işlem kayıtlı klasörleri silmez. Kayıtları da silmek isterseniz
 `%LOCALAPPDATA%\xd` klasörünü ayrıca kaldırabilirsiniz.
 
+## Linux / macOS
+
+Gereksinimler: bash veya zsh, `awk`. `xd -o` için `xdg-open` (Linux) ya da `open` (macOS).
+
+### Kurulum
+
+```bash
+git clone https://github.com/cafercan/xd.git
+cd xd
+./install.sh
+```
+
+Betik `xd.sh` dosyasını `~/.local/share/xd/` altına kopyalar ve `~/.bashrc` / `~/.zshrc`
+dosyalarına onu yükleyen bir blok ekler. Ardından yeni bir terminal açın ya da
+`source ~/.local/share/xd/xd.sh` çalıştırın.
+
+Komutlar Windows sürümüyle aynıdır:
+
+```bash
+xd -add proje ~/Workspaces/proje
+xd -atf proje          # veya: xd -pwd proje
+xd proje
+xd -o proje            # dosya yöneticisinde açar
+xd -list
+xd -remove proje
+xd -help
+```
+
+Kayıtlı adlar ve seçenekler için `Tab` tamamlaması vardır. Kayıtlar
+`~/.local/share/xd/aliases` dosyasında (`ad<TAB>yol` satırları) tutulur.
+
+### Kaldırma
+
+```bash
+./uninstall.sh
+```
+
+rc dosyalarındaki bloğu ve betiği kaldırır; kayıtlı klasörler korunur.
+
 ## Test
 
 Proje klasöründe:
 
 ```powershell
 .\tests\xd.Tests.ps1
+```
+
+Linux / macOS:
+
+```bash
+bash tests/xd.test.sh
 ```
