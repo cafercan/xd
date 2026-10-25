@@ -166,3 +166,7 @@ Linux / macOS:
 ```bash
 bash tests/xd.test.sh
 ```
+
+## Lisans
+
+[MIT](LICENSE)
