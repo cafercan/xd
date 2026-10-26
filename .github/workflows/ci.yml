@@ -1,0 +1,48 @@
+# Her gönderimde: xd.sh testleri bash ve zsh ile, kurulum betiği testleri Linux ve
+# macOS'ta (macOS'un kendi bash 3.2'si ve BSD araçlarıyla), PowerShell modülü Windows'ta.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unix:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - if: runner.os == 'Linux'
+        run: sudo apt-get install -y zsh
+      - run: /bin/bash --version | head -1
+      - name: xd.sh (bash)
+        run: /bin/bash tests/xd.test.sh
+      - name: xd.sh (zsh)
+        run: zsh tests/xd.test.sh
+      - name: install.sh / uninstall.sh
+        run: /bin/bash tests/install.test.sh
+      - name: Gerçek kurulum, yeni bir zsh oturumunda xd bulunuyor mu
+        shell: bash
+        run: |
+          export HOME="$(mktemp -d)" SHELL=/bin/zsh
+          /bin/bash install.sh
+          zsh -i -c 'type xd' | grep -q function
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PowerShell 5.1
+        shell: powershell
+        run: .\tests\xd.Tests.ps1
+      - name: PowerShell 7
+        shell: pwsh
+        run: .\tests\xd.Tests.ps1

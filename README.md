@@ -126,9 +126,16 @@ cd xd
 ./install.sh
 ```
 
-Betik `xd.sh` dosyasını `~/.local/share/xd/` altına kopyalar ve `~/.bashrc` / `~/.zshrc`
-dosyalarına onu yükleyen bir blok ekler. Ardından yeni bir terminal açın ya da
-`source ~/.local/share/xd/xd.sh` çalıştırın.
+Betik `xd.sh` dosyasını `~/.local/share/xd/` altına kopyalar ve kabuğun başlangıç
+dosyalarına onu yükleyen bir blok ekler:
+
+- var olan `~/.bashrc` ve `~/.zshrc` dosyalarına;
+- **macOS'ta** ayrıca `~/.zshrc`'ye (yeni bir Mac'te bu dosya yoktur, oluşturulur) ve
+  bash için Terminal'in okuduğu `~/.bash_profile`'a (yoksa `~/.bash_login` ya da
+  `~/.profile`'a);
+- Linux'ta hiçbiri yoksa kullandığınız kabuğa göre `~/.zshrc` ya da `~/.bashrc`'ye.
+
+Ardından yeni bir terminal açın ya da `source ~/.local/share/xd/xd.sh` çalıştırın.
 
 Komutlar Windows sürümüyle aynıdır:
 
@@ -151,7 +158,7 @@ Kayıtlı adlar ve seçenekler için `Tab` tamamlaması vardır. Kayıtlar
 ./uninstall.sh
 ```
 
-rc dosyalarındaki bloğu ve betiği kaldırır; kayıtlı klasörler korunur.
+Başlangıç dosyalarındaki bloğu ve betiği kaldırır; kayıtlı klasörler korunur.
 
 ## Test
 
@@ -164,7 +171,8 @@ Proje klasöründe:
 Linux / macOS:
 
 ```bash
-bash tests/xd.test.sh
+bash tests/xd.test.sh        # veya: zsh tests/xd.test.sh
+bash tests/install.test.sh   # kurulum / kaldırma betikleri
 ```
 
 ## Lisans
