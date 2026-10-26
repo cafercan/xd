@@ -4,8 +4,9 @@ param()
 $ErrorActionPreference = 'Stop'
 
 $moduleName = 'xd'
-$moduleVersion = '0.1.0'
 $sourceDirectory = $PSScriptRoot
+# Surum tek yerde, xd.psd1'de tutulur; kurulum klasoru ona gore adlandirilir
+$moduleVersion = (Import-PowerShellDataFile (Join-Path $sourceDirectory 'xd.psd1')).ModuleVersion
 $documentsDirectory = [Environment]::GetFolderPath('MyDocuments')
 $moduleDirectory = Join-Path $documentsDirectory "PowerShell\Modules\$moduleName\$moduleVersion"
 
